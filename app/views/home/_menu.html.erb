@@ -1,0 +1,73 @@
+<head>
+  <%= javascript_include_tag "menuTurn", "data-turbo-track": "reload", defer: true %>
+  <%= javascript_include_tag "changePageName", "data-turbo-track": "reload", defer: true %>
+</head>
+<div class="bg-primary h-100 shadow">
+  <div class="row m-0">
+    <div id="logo_img" class="col m-0 p-2 me-5">
+      <%= image_tag("logo-sm.png") %>
+    </div>
+    <div class="col align-self-center">
+      <%= button_tag("", :class=>"bg-primary border-0 bi bi-caret-left-fill text-white h1 m-0 p-0 mt-5", :id=>"btn-slide-menu", :onclick=>'menuTurn();') %>
+    </div>
+  </div>
+  <hr>
+  <div class="row m-0">
+    <div class="p-0 m-0">
+      <div class="accordion" id="main-menu">
+        <div>
+          <div id="inventory" onclick="clickMenuTurn();">
+            <div class="row ps-3 m-0 pt-2 pb-2 hovered" type="button" data-bs-toggle="collapse" data-bs-target="#inventory-submenu" aria-expanded="true" aria-controls="inventory-submenu">
+              <div class="col-md-auto bi bi-diagram-3 text-white m-0 p-0"></div><div id="btn_invent_text" class="col text-white ms-3 p-0">Инвентаризация</div>
+            </div>
+          </div>
+          <div id="inventory-submenu" class="accordion-collapse collapse show" aria-labelledby="inventory" data-bs-parent="#main-menu">
+            <nav class="nav flex-column bg-color-submenu">
+              <a href="groups#index" class="text-white text-decoration-none ps-5 pt-2 pb-2 hovered" data-turbo-frame="workspace">Организации</a>
+              <a href="hosts#index" class="text-white text-decoration-none ps-5 pt-2 pb-2 hovered" data-turbo-frame="workspace">Хосты</a>
+            </nav>
+          </div>
+        </div>
+        <div>
+          <div id="project" onclick="clickMenuTurn();">
+            <div class="row ps-3 m-0 pt-2 pb-2 collapsed hovered" type="button" data-bs-toggle="collapse" data-bs-target="#project-submenu" aria-expanded="true" aria-controls="project-submenu">
+              <div class="col-md-auto bi bi-file-earmark-code text-white m-0 p-0"></div><div id="btn_project_text" class="col text-white ms-3 p-0">Проект</div>
+            </div>
+          </div>
+          <div id="project-submenu" class="accordion-collapse collapse" aria-labelledby="project" data-bs-parent="#main-menu">
+            <nav class="nav flex-column bg-color-submenu">
+              <a href="files#index" class="text-white text-decoration-none ps-5 pt-2 pb-2 hovered" data-turbo-frame="workspace">Файлы</a>
+              <a href="playbooks#index" class="text-white text-decoration-none ps-5 pt-2 pb-2 hovered" data-turbo-frame="workspace">Плейбуки</a>
+              <!--<a href="#" class="text-white text-decoration-none ps-5 pt-2 pb-2 hovered" data-turbo-frame="workspace">Роли</a>-->
+            </nav>
+          </div>
+        </div>
+        <div>
+          <div id="run-playbook" onclick="clickMenuTurn();">
+            <a href="/run_play_book" class="text-white text-decoration-none hovered" data-turbo-frame="workspace">
+              <div class="row ps-3 m-0 pt-2 pb-2 collapsed hovered" data-bs-toggle="collapse" data-bs-target="#run-playbook-submenu" aria-expanded="true" aria-controls="run-playbook-submenu">
+                <div class="col-md-auto bi bi-play text-white m-0 p-0"></div><div id="btn_run-playbook_text" class="col text-white ms-3 p-0">Запуск плейбука</div>
+              </div>
+            </a>
+          </div>
+          <div id="run-playbook-submenu" class="accordion-collapse collapse" aria-labelledby="run-playbook" data-bs-parent="#main-menu">
+          </div>
+        </div>
+        <div>
+          <div id="settings" onclick="clickMenuTurn();">
+            <div class="row ps-3 m-0 pt-2 pb-2 collapsed hovered" type="button" data-bs-toggle="collapse" data-bs-target="#settings-submenu" aria-expanded="true" aria-controls="settings-submenu">
+              <div class="col-md-auto bi bi-gear text-white m-0 p-0"></div><div id="btn_settings_text" class="col text-white ms-3 p-0">Настройки</div>
+            </div>
+          </div>
+          <div id="settings-submenu" class="accordion-collapse collapse" aria-labelledby="settings" data-bs-parent="#main-menu">
+            <nav class="nav flex-column bg-color-submenu">
+              <a href="users#index" class="text-white text-decoration-none ps-5 pt-2 pb-2 hovered" data-turbo-frame="workspace">Пользователи</a>
+              <a href="app_settings" class="text-white text-decoration-none ps-5 pt-2 pb-2 hovered" data-turbo-frame="workspace">Приложение</a>
+              <a href="integration" class="text-white text-decoration-none ps-5 pt-2 pb-2 hovered" data-turbo-frame="workspace">Интеграция</a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

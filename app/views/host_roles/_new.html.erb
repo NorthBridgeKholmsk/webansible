@@ -1,0 +1,27 @@
+<% @host_role = HostRole.new %>
+<div class="modal fade" id="create_host_roles_modal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="create_host_roles_modal_label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="create_host_roles_modal_label">Создать роль хоста</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with model: @host_role do |f| %>
+          <div class="field form-group">
+            <%= f.label :id_role, "ID" %>
+            <%= f.text_field :id_role, :class => "form-control"%>
+          </div><br>
+          <div class="field form-group">
+            <%= f.label :name, "Имя" %>
+            <%= f.text_field :name, :class => "form-control" %>
+          </div><br>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+          <%= f.submit "Создать", :class=>"btn btn-primary", :onclick=>"document.getElementsByClassName('modal-backdrop')[0].remove();" %>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>

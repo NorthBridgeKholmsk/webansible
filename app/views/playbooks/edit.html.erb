@@ -1,0 +1,62 @@
+<%= turbo_frame_tag "workspace" do %>
+  <% form_with model:@playbook do |f|%>
+    <div class="row ms-3">
+      <div class="col">
+        <div class="row mb-3">
+          <div>
+            <%= f.label :name, "Название плейбука*" %>
+            <%= f.text_field :name, :class=>"form-control" %>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div>
+            <%= f.label :comment, "Комментарий" %>
+            <%= f.text_area :comment, :class=>"form-control"%>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="accordion" id="tasks">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="lin-tasks-heading">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#lin-tasks-collapse" aria-expanded="false" aria-controls="lin-tasks-collapse">
+                  Linux задачи
+                </button>
+              </h2>
+              <div id="lin-tasks-collapse" class="accordion-collapse collapse" aria-labelledby="lin-tasks-heading">
+                <div>
+                  <%= button_tag("Выбрать файл", :type=>"button", :class=>"btn btn-outline-primary btn-sm m-2 me-1", :"data-bs-toggle"=>"modal", :"data-bs-target"=>"#files_modal") %>
+                  <%= link_to "Справка", "https://docs.ansible.com/ansible/latest/collections/ansible/builtin/#modules", :target=>"_blank", :class=>"btn btn-outline-primary btn-sm m-2 me-1" %>
+                </div>
+                <%= render "/files/modal_files" %>
+                <div>
+                  <%= f.text_area :lin_tasks, :class=>"form-control", :rows=>"20" %>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="win-tasks-heading">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#win-tasks-collapse" aria-expanded="false" aria-controls="win-tasks-collapse">
+                  Windows задачи
+                </button>
+              </h2>
+              <div id="win-tasks-collapse" class="accordion-collapse collapse" aria-labelledby="win-tasks-heading">
+                <div>
+                  <%= button_tag("Выбрать файл", :type=>"button", :class=>"btn btn-outline-primary btn-sm m-2", :"data-bs-toggle"=>"modal", :"data-bs-target"=>"#files_modal") %>
+                  <%= link_to "Справка", "https://docs.ansible.com/ansible/2.9/modules/list_of_windows_modules.html#windows-modules", :target=>"_blank", :class=>"btn btn-outline-primary btn-sm m-2 me-1" %>
+                </div>
+                <%= render "/files/modal_files" %>
+                <div>
+                  <%= f.text_area :win_tasks, :class=>"form-control", :rows=>"20" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-auto">
+        <%= f.submit "Сохранить", :class=>"btn btn-primary mb-2 w-100" %><br>
+        <%= link_to "Отменить", "playbooks#index", :type=>"button", :class=>"btn btn-secondary w-100" %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

@@ -1,0 +1,12 @@
+<div class="row mt-2">
+  <div id="page_name" class="col">
+    Page name
+  </div>
+  <div class="col-md-auto">
+    <%= User.find(session[:user_id]).first_name %> <%= User.find(session[:user_id]).last_name %>
+  </div>
+  <div class="col-md-auto">
+    <%= link_to "Выйти", "/logout" %>
+  </div>
+</div>
+<hr>

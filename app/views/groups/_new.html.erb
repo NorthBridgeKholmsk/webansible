@@ -1,0 +1,43 @@
+<%= javascript_include_tag "varsControl", "data-turbo-track": "reload", defer: true %>
+<% @group = Group.new %>
+<div class="modal fade" id="create_group_modal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="create_group_modal_label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="create_group_modal_label">Создать организацию</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with model: @group do |f| %>
+          <div class="field form-group">
+            <%= f.label :name, "Название" %>
+            <%= f.text_field :name, :class => "form-control"%>
+          </div><hr>
+          <div class="field form-group">
+            <%= f.text_field :variables, :type=>"hidden", :id=>"variables0" %>
+          </div>
+          <div id="vars0">
+            <div class="row mb-2">
+              <div class="col">Имя переменной</div><div class="col">Значение переменной</div>
+            </div>
+            <div id="newVar0" class="row field form-group mb-3 visually-hidden">
+              <div class="col"><input type="text" class="form-control"></div><div class="col"><input type="text" class="form-control"></div>
+              <div class="col-md-auto p-0"><button type="button" class="bg-opacity-100 border-0 bi bi-x-circle text-danger btn m-0 p-0 pe-3 h1" onclick="delVar(this);"></button></div>
+            </div>
+            <div class="row field form-group mb-3">
+              <div class="col"><input type="text" class="form-control"></div><div class="col"><input type="text" class="form-control"></div>
+              <div class="col-md-auto p-0"><button type="button" class="bg-opacity-100 border-0 bi bi-x-circle text-danger btn m-0 p-0 pe-3 h1" onclick="delVar(this);"></button></div>
+            </div>
+            <div id="btn_addVar0" class="field form-group">
+              <%= f.button "Добавить", :type=>"button", :class=>"btn btn-primary w-100 mt-3", :onclick=>"addVar('0');"%>
+            </div>
+          </div><hr>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+          <%= f.submit "Создать", :class=>"btn btn-primary", :onclick=>"getAllVars('0'); document.getElementsByClassName('modal-backdrop')[0].remove();"%>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>

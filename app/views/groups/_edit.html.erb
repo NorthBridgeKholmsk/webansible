@@ -1,0 +1,53 @@
+<%= javascript_include_tag "varsControl", "data-turbo-track": "reload", defer: true %>
+<div class="modal fade" id="edit_group_modal<%= @group.id %>" data-bs-backdrop="static" tabindex="-1" aria-labelledby="edit_group_modal_label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="edit_group_modal_label">Редактировать организацию</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with model: @group do |f| %>
+          <div class="field form-group">
+            <%= f.label :name, "Название" %>
+            <%= f.text_field :name, :class => "form-control"%>
+          </div><hr>
+          <div class="field form-group">
+            <%= f.text_field :variables, :type=>"hidden", :id=>"variables"+@group.id.to_s%>
+          </div>
+          <div id="vars<%= @group.id %>">
+            <div class="row mb-2">
+              <div class="col">Имя переменной</div><div class="col">Значение переменной</div>
+            </div>
+            <div id="newVar<%= @group.id %>" class="row field form-group mb-3 visually-hidden">
+              <div class="col"><input type="text" class="form-control"></div><div class="col"><input type="text" class="form-control"></div>
+              <div class="col-md-auto p-0"><button type="button" class="bg-opacity-100 border-0 bi bi-x-circle text-danger btn m-0 p-0 pe-3 h1" onclick="delVar(this);"></button></div>
+            </div>
+            <% if @group.variables != nil %>
+              <% @vars = @group.variables.split(',') %>
+              <% @vars.each do |var| %>
+                <% @varPair = var.split(':') %>
+                <div class="row field form-group mb-3">
+                  <div class="col"><input type="text" class="form-control" value="<%= @varPair[0] %>"></div><div class="col"><input type="text" class="form-control" value="<%= @varPair[1] %>"></div>
+                  <div class="col-md-auto p-0"><button type="button" class="bg-opacity-100 border-0 bi bi-x-circle text-danger btn m-0 p-0 pe-3 h1" onclick="delVar(this);"></button></div>
+                </div>
+              <% end %>
+            <% else %>
+              <div class="row field form-group mb-3">
+                <div class="col"><input type="text" class="form-control"></div><div class="col"><input type="text" class="form-control"></div>
+                <div class="col-md-auto p-0"><button type="button" class="bg-opacity-100 border-0 bi bi-x-circle text-danger btn m-0 p-0 pe-3 h1" onclick="delVar(this);"></button></div>
+              </div>
+            <% end %>
+            <div id="btn_addVar<%= @group.id %>" class="field form-group">
+              <%= f.button "Добавить", :type=>"button", :class=>"btn btn-primary w-100 mt-3", :onclick=>"addVar("+@group.id.to_s+");"%>
+            </div>
+          </div><hr>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+          <%= f.submit "Сохранить", :class=>"btn btn-primary", :onclick=>"getAllVars("+@group.id.to_s+"); document.getElementsByClassName('modal-backdrop')[0].remove();"%>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>

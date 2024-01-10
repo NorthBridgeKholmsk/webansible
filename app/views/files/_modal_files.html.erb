@@ -1,0 +1,64 @@
+<div class="modal fade" id="files_modal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="files_modal_label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="files_modal_label">Путь к файлу</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <% def insert_file(hash, i)
+             if hash.key?(@path[i])
+               insert_file(hash[@path[i]], i+1)
+             else
+               hash[@path[i]] = {}
+               return
+             end
+           end %>
+        <% path = Dir.pwd
+           Dir.chdir(@work_dir+"/files")
+           tree = Dir.glob("**/*")
+           Dir.chdir(path)
+           hash = {}
+           tree.each do |item|
+             @path = item.split("/")
+             insert_file(hash, 0)
+           end %>
+        <% def draw(hash, path)
+             html = ""
+             hash.each do |key, value|
+               id = rand(10000)
+               html += "<div class='accordion-item'>"
+               html += "<div class='mb-3 mt-2 collapsed' type='button' data-bs-toggle='collapse' data-bs-target='#collapse#{id}' aria-expanded='true' aria-controls='collapse#{id}'>"
+               if File.file?(path+"/"+key)
+                 html += "<p class='bi bi-file-earmark-code-fill ms-3 m-0'><i class='ms-2'>#{key}</i>"
+                 html += "<button name=\"button\" type=\"button\" class=\"ms-3 border-0\" data-bs-dismiss=\"modal\" onclick=\"var copyText = document.getElementById('path');
+                                                                                                                              copyText.value = '#{path+"/"+key}';
+                                                                                                                              copyText.select();
+                                                                                                                              document.execCommand('copy');
+                                                                                                                              alert('Путь к файлу скопирован в буфер обмена');
+                          \"><i class=\"bi bi-copy\"></i></button>"
+                 html += "</p>"
+                 html += "</div>"
+               else
+                 html += "<p class='bi bi-folder-fill ms-3 m-0'><i class='ms-2'>#{key}</i>"
+                 html += "</p>"
+                 html += "</div>"
+                 html += "<div id='collapse#{id}' class='accordion-collapse collapse' aria-labelledby='heading#{id}'>"
+                 html += "<div class='accordion-body'>"
+                 html += draw(value, path+"/"+key)
+                 html += "</div>"
+                 html += "</div>"
+               end
+               html += "</div>"
+             end
+             return html.html_safe
+           end %>
+           <% content = draw(hash, @work_dir + "/files") %>
+           <%= content %>
+      </div>
+      <div class="modal-footer">
+        <input type="text" id="path" value="" class="visually-hidden">
+      </div>
+    </div>
+  </div>
+</div>

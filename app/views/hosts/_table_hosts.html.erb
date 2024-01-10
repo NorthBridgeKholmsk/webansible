@@ -1,0 +1,112 @@
+<%= form_for Host.new, :url=>"host_search" do |f| %>
+  <div class="row mb-1">
+    <div class="col">
+      <div class="form-floating">
+        <input class="form-control" list="datalistHostnames" id="hostname" name="host[hostname]" placeholder="Нажмите для поиска...">
+        <datalist id="datalistHostnames">
+          <% Host.all.each do |host| %>
+            <option value="<%= host.hostname %>">
+          <% end %>
+        </datalist>
+        <label for="hostname">Имя хоста</label>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-floating">
+        <input class="form-control" list="datalistOrg" id="org" name="host[group]" placeholder="Нажмите для поиска...">
+        <datalist id="datalistOrg">
+          <% Group.all.each do |group| %>
+            <option value="<%= group.name %>">
+          <% end %>
+        </datalist>
+        <label for="org">Организация</label>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-floating">
+        <input class="form-control" list="datalistOs" id="os" name="host[os]" placeholder="Нажмите для поиска...">
+        <datalist id="datalistOs">
+          <option value="Linux">
+          <option value="Windows">
+        </datalist>
+        <label for="os">Тип операционной системы</label>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-1">
+    <div class="col">
+      <div class="form-floating">
+        <input class="form-control" id="address" name="host[address]" placeholder="Нажмите для поиска...">
+        <label for="address">IP адрес</label>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-floating">
+        <input class="form-control" list="datalistType" id="host_type" name="host[host_type]" placeholder="Нажмите для поиска...">
+        <datalist id="datalistType">
+          <% HostType.all.each do |type| %>
+            <option value="<%= type.name %>">
+          <% end %>
+        </datalist>
+        <label for="host_type">Тип хоста</label>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-floating">
+        <input class="form-control" list="datalistRole" id="host_role" name="host[host_role]" placeholder="Нажмите для поиска...">
+        <datalist id="datalistRole">
+          <% HostRole.all.each do |role| %>
+            <option value="<%= role.name %>">
+          <% end %>
+        </datalist>
+        <label for="host_role">Роли хоста</label>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <%= f.submit "Поиск", :class=>"btn btn-outline-primary btn-sm w-25" %>
+    </div>
+  </div>
+<% end %>
+<hr>
+<head>
+  <%= javascript_include_tag "checkBoxTable", "data-turbo-track": "reload", defer: true %>
+</head>
+<table class="table table-striped table-hover table-bordered">
+  <thead>
+  <tr class="table-primary">
+    <th class="h-auto" scope="col"><input id="select_all" type="checkbox" onclick="checkBoxTable_clickSelectAll();"></th>
+    <th scope="col">Имя хоста</th>
+    <th scope="col">IP адрес</th>
+    <th scope="col">Тип</th>
+    <th scope="col">ОС</th>
+    <th scope="col">Роли</th>
+    <th scope="col">Организация</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @hosts.each do |host| %>
+    <% @host = Host.find(host.id) %>
+    <tr>
+      <th scope="row"><input class="select_row" type="checkbox" onclick="checkBoxTable_clickSelectRow(this);"></th>
+      <td><a href="#"  data-bs-toggle="modal" data-bs-target="#edit_host_modal<%= host.id %>" onclick=""><%= host.hostname %></a></td>
+      <td><%= host.address %></td>
+      <td><%= HostType.find(host.host_type_id).name %></td>
+      <td><%= host.os %></td>
+      <% @roles = [] %>
+      <% host.host_role.split(',').each do |role| %>
+        <% if role != "" %>
+          <% @roles[@roles.size] = HostRole.find(role).name %>
+        <% end %>
+      <% end %>
+      <td><%= @roles.join(', ') %></td>
+      <td><%= Group.find(host.group_id).name %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<% Host.all.each do |host| %>
+  <% @host = Host.find(host.id) %>
+  <%= render "hosts/edit" %>
+<% end %>

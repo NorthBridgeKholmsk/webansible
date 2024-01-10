@@ -1,0 +1,10 @@
+@import 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons';
+
+.hovered:hover, .hovered:not(.collapsed, a), .hovered:active{
+  background-color: lighten($primary, 10)
+}
+
+.bg-color-submenu{
+  background-image: linear-gradient(darken($primary, 10) 1%,darken($primary, 5) 4%,darken($primary, 5) 96%,darken($primary, 10) 100%);
+}

@@ -1,0 +1,26 @@
+<head>
+  <%= javascript_include_tag "checkBoxTable", "data-turbo-track": "reload", defer: true %>
+</head>
+<table class="table table-striped table-hover table-bordered">
+  <thead>
+  <tr class="table-primary">
+    <th class="h-auto" scope="col"><input id="select_all" type="checkbox" onclick="checkBoxTable_clickSelectAll();"></th>
+    <th scope="col">Название</th>
+    <th scope="col">Количество хостов</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% Group.all.each do |group| %>
+    <% @group = Group.find(group.id) %>
+    <tr>
+      <th scope="row"><input class="select_row" type="checkbox" onclick="checkBoxTable_clickSelectRow(this);"></th>
+      <td><a href="#"  data-bs-toggle="modal" data-bs-target="#edit_group_modal<%= group.id %>" onclick=""><%= group.name %></a></td>
+      <td>0</td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<% Group.all.each do |group| %>
+  <% @group = Group.find(group.id) %>
+  <%= render "edit" %>
+<% end %>

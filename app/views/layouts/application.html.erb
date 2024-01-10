@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Webansible</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  </head>
+  <body>
+    <div class="row p-0 m-0 vh-100">
+      <div class="col-md-auto p-0">
+        <%= render "home/menu"%>
+      </div>
+      <div class="col">
+        <div>
+          <%= render "home/footer"%>
+        </div>
+        <div>
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

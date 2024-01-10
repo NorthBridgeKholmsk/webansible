@@ -1,0 +1,46 @@
+<%= turbo_frame_tag "workspace" do %>
+
+  <div class="accordion" id="treeDir">
+    <%= @draw %>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-auto">
+      <%= button_tag("Создать каталог", :class=>"btn btn-outline-primary btn-sm", :"data-bs-toggle"=>"modal", :"data-bs-target"=>"#create_dir_modal") %>
+    </div>
+    <div class="col-md-auto">
+      <%= form_with url: "/upload_file" do |f|%>
+        <input type="hidden" name="path" value="<%= @work_dir+"/files" %>" autocomplete="off">
+        <div class="row">
+          <div class="col-md-auto">
+            <%= f.file_field :upload, :class=>"form-control" %>
+          </div>
+          <div class="col-md-auto">
+            <%= f.submit "Загрузить", :class=>"btn btn-outline-primary btn-sm" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="modal fade" id="create_dir_modal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="create_dir_modal_label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="create_dir_modal_label">Создание каталога</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form enctype="multipart/form-data" action="/create_dir" accept-charset="UTF-8" method="post">
+            <input type="hidden" name="path" value="<%= @work_dir+"/files" %>" autocomplete="off">
+            <div class="field form-group">
+              <label for="dir_name">Название каталога</label>
+              <input class="form-control" type="text" name="dir_name" id="dir_name">
+            </div>
+            <hr>
+            <input type="submit" name="commit" value="Создать" data-disable-with="Создать" class="btn btn-primary" onclick="document.getElementsByClassName('modal-backdrop')[0].remove();">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

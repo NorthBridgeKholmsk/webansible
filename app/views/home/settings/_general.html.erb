@@ -1,0 +1,18 @@
+<%= turbo_frame_tag "workspace_settings" do %>
+  <% form_with :url=>"settings_apply" do |f| %>
+    <div class="row">
+      <div class="col">
+        <%= f.label :port, "Порт веб-интерфейса" %>
+        <%= f.text_field :port, :class => "form-control mb-3", :value=>@port %>
+
+        <%= f.label :work_dir, "Рабочий каталог" %>
+        <%= f.text_field :work_dir, :class => "form-control mb-3", :value=>@work_dir %>
+      </div>
+      <div class="vr p-0"></div>
+      <div class="col-md-auto">
+        <%= f.submit "Применить", :class=>"btn btn-primary w-100 mb-2"%><br>
+        <%= f.submit "Сбросить", :class=>"btn btn-secondary w-100", :type=>"reset" %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

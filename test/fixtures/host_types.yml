@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id_type: MyText
+  name: MyText
+
+two:
+  id_type: MyText
+  name: MyText

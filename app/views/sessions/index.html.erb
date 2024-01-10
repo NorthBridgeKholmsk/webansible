@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Webansible</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+</head>
+<body>
+  <div class="row m-0 ">
+    <div class="col-md-auto">
+      <%# button_tag("", :class=>" border-0 bi bi-moon-fill text-black mt-5 h1", :id=>"", :onclick=>"") %>
+    </div>
+  </div>
+  <div class="row align-items-center m-0 mt-lg-5">
+    <div class="col-md-auto">
+      <%= image_tag("login.png") %>
+    </div>
+    <div class="col-md-auto">
+      <fieldset class="form-group border p-3">
+        <legend class="w-auto px-2">Авторизация</legend>
+        <%= form_with url: "login_attempt" do |f|%>
+          <div class="field form-group">
+            <%= f.label :login, "Имя пользователя"%><br />
+            <%= f.text_field :login, autofocus: true, autocomplete: "login", :class => "form-control" %>
+          </div>
+          <div class="field form-group">
+            <%= f.label :password, "Пароль"%><br />
+            <%= f.password_field :password, autocomplete: "current-password", :class => "form-control" %>
+          </div><br>
+          <div class="actions">
+            <%= f.submit "Войти", :class => "btn btn-primary w-100"%>
+          </div>
+        <% end %>
+      </fieldset>
+      <p class="notice m-0 p-0 text-danger"><%= notice %></p>
+    </div>
+  </div>
+</body>
+</html>

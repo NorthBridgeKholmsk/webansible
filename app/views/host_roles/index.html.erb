@@ -1,0 +1,19 @@
+<%= turbo_frame_tag "workspace_settings" do %>
+  <%= turbo_frame_tag "table" do%>
+    <%= render "host_roles/table_host_roles" %>
+  <% end %>
+  <hr>
+  <%= javascript_include_tag "tableControl", "data-turbo-track": "reload", defer: true %>
+  <%= form_with url: "/host_roles", :html => {:method => :delete} do |f|%>
+    <span id="count_select">0</span><span class="me-4"> выбрано</span>
+    <%= button_tag("Создать", :type=>"button", :class=>"btn btn-outline-primary btn-sm", :"data-bs-toggle"=>"modal", :"data-bs-target"=>"#create_host_roles_modal") %>
+    <%= f.text_field :id, :value=>"", :class=>"visually-hidden" %>
+    <%= f.submit "Удалить", :id=>"btn_del", :class=>"btn btn-outline-primary btn-sm disabled", :tabindex=>"-1", :"aria-disabled"=>"true", :onclick=>"del();" %>
+  <% end %>
+  <% if flash[:error].to_s.length != 0 %>
+    <div class="alert alert-danger m-0 mt-3 p-3" role="alert">
+      <%= flash[:error] %> <% flash[:error] = "" %>
+    </div>
+  <% end %>
+  <%= render "new" %>
+<% end %>

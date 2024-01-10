@@ -1,0 +1,51 @@
+<% @host = Host.new %>
+<div class="modal fade" id="create_host_modal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="create_host_modal_label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="create_host_modal_label">Создать хост</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with model: @host do |f| %>
+          <div class="field form-group">
+            <%= f.label :hostname, "Имя хоста" %>
+            <%= f.text_field :hostname, :class => "form-control"%>
+          </div><br>
+          <div class="field form-group">
+            <%= f.label :address, "IP адрес" %>
+            <%= f.text_field :address, :class => "form-control"%>
+          </div><hr>
+          <div class="field form-group">
+            <%= f.label :login, "Логин" %>
+            <%= f.text_field :login, :class => "form-control"%>
+          </div><br>
+          <div class="field form-group">
+            <%= f.label :password, "Пароль" %>
+            <%= f.password_field :password, :class => "form-control"%>
+          </div><hr>
+          <div class="field form-group">
+            <%= f.label :host_type_id, "Тип хоста" %>
+            <%= f.collection_select :host_type_id, HostType.order(:name), :id, :name, {}, {:class => "form-control list-group"}%>
+          </div><br>
+          <div class="field form-group">
+            <%= f.label :os, "Тип ОС" %>
+            <%= f.select :os, {"Linux"=>"Linux", "Windows"=>"Windows"},{}, {:class => "form-control list-group"}%>
+          </div><br>
+          <div class="field form-group">
+            <%= f.label :host_role, "Роли хоста" %>
+            <%= f.collection_select :host_role, HostRole.order(:name), :id, :name, {}, {:class => "form-control list-group", :multiple => true} %>
+          </div><br>
+          <div class="field form-group">
+            <%= f.label :group_id, "Организация" %>
+            <%= f.collection_select :group_id, Group.order(:name), :id, :name, {}, {:class => "form-control list-group"}%>
+          </div><hr>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+          <%= f.submit "Создать", :class=>"btn btn-primary", :onclick=>"document.getElementsByClassName('modal-backdrop')[0].remove();"%>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>

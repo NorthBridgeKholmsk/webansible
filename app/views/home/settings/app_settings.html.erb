@@ -1,0 +1,18 @@
+<%= turbo_frame_tag "workspace" do %>
+<div class="row">
+  <div class="col-md-auto p-0">
+    <nav class="nav flex-column">
+      <a href="general" class="nav-item text-decoration-none ps-2 p-2 hovered" data-turbo-frame="workspace_settings">Общие</a>
+      <!-- <a href="access_settings" class="text-decoration-none ps-2 p-2 hovered">Права доступа</a> -->
+      <a href="host_types#index" class="text-decoration-none ps-2 p-2 hovered" data-turbo-frame="workspace_settings">Типы хостов</a>
+      <a href="host_roles#index" class="text-decoration-none ps-2 p-2 hovered" data-turbo-frame="workspace_settings">Роли хостов</a>
+    </nav>
+  </div>
+  <div class="vr p-0"></div>
+  <div class="col">
+    <%= turbo_frame_tag "workspace_settings" do%>
+      <%= render "home/settings/general" %>
+    <% end %>
+  </div>
+</div>
+<% end %>

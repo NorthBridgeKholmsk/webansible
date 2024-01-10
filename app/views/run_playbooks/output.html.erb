@@ -1,0 +1,9 @@
+<%= turbo_frame_tag "workspace" do %>
+  <%= button_to "Выполнить плейбук", "/get_output", data: {turbo_method: :post}, :class=>"btn btn-primary w-100", :onclick=>"document.getElementById('text').value = ''; document.getElementById('text').rows = 1"%>
+  <div class="row mt-5 border border-2">
+    <p>Процесс выполнения плейбука:</p><br>
+    <div class="col overflow-auto">
+      <textarea class="form-control-plaintext" style="resize: none" id="text" rows="1" readonly></textarea>
+    </div>
+  </div>
+<% end %>

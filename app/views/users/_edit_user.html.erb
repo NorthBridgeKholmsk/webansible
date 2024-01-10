@@ -1,0 +1,39 @@
+<div class="modal fade" id="edit_user_modal<%= @user.id %>" data-bs-backdrop="static" tabindex="-1" aria-labelledby="edit_user_modal_label<%= @user.id %>" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="edit_user_modal_label<%= @user.id %>">Редактировать пользователя</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with model: @user do |f| %>
+          <div class="field form-group">
+            <%= f.label :login, "Логин" %>
+            <%= f.text_field :login, :class => "form-control"%>
+          </div><br>
+          <div class="field form-group">
+            <%= f.label :first_name, "Имя" %>
+            <%= f.text_field :first_name, :class => "form-control" %>
+          </div><br>
+          <div class="field form-group">
+            <%= f.label :last_name, "Фамилия" %>
+            <%= f.text_field :last_name, :class => "form-control" %>
+          </div><br><hr>
+          <div class="field form-group">
+            <%= f.label :password, "Пароль" %>
+            <%= f.password_field :password, :class => "form-control" %>
+          </div><br>
+          <div class="field form-group">
+            <%= f.label :password_confirmation, "Подтверждение пароля" %>
+            <%= f.password_field :password_confirmation, :class => "form-control" %>
+          </div><br>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+          <%= f.submit "Сохранить", :class=>"btn btn-primary", :onclick=>"document.getElementsByClassName('modal-backdrop')[0].remove();" %>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>

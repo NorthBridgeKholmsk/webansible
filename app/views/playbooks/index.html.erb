@@ -1,0 +1,60 @@
+<%= turbo_frame_tag "workspace" do %>
+  <div class="row">
+    <div class="col">
+      Search
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col">
+      <table class="table table-striped table-hover table-bordered">
+        <thead>
+        <tr class="table-primary">
+          <th scope="col">Название плейбука</th>
+          <th scope="col">Поддерживаемые платформы</th>
+          <th scope="col">Комментарий</th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% Playbook.all.each do |playbook| %>
+          <% @playbook = Playbook.find(playbook.id) %>
+          <tr>
+            <td><%= @playbook.name %></td>
+            <td>
+              <% platforms = [] %>
+              <% unless @playbook.lin_tasks.to_s.empty?
+                   platforms << "Linux"
+                 end
+                 unless @playbook.win_tasks.to_s.empty?
+                   platforms << "Windows"
+                 end
+                 if @playbook.lin_tasks.to_s.empty? && @playbook.win_tasks.to_s.empty?
+                   platforms << "Нет"
+                 end
+              %>
+              <%= platforms.join(',') %>
+            </td>
+            <td><%= @playbook.comment %></td>
+            <td>
+              <%= link_to "<i class='bi bi-pencil-fill'></i>".html_safe, edit_playbook_path(@playbook.id), :class=>"me-2" %>
+              <%= link_to "<i class='bi bi-trash3-fill'></i>".html_safe, playbook_path(@playbook.id), data: {turbo_method: :delete, turbo_confirm: 'Вы уверены, что хотите удалить плейбук "'+@playbook.name+'"?'}, :class=>"me-2" %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <hr>
+  <% if flash[:error].to_s.length != 0 %>
+    <div class="alert alert-danger m-0 mt-3 p-3 mb-3" role="alert">
+      <%= flash[:error] %> <% flash[:error] = "" %>
+    </div>
+  <% end %>
+  <div class="row">
+    <div class="col">
+      <%= link_to("Создать плейбук", new_playbook_path, :class=>"btn btn-outline-primary btn-sm") %>
+    </div>
+  </div>
+<% end %>

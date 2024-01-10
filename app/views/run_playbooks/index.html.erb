@@ -1,0 +1,38 @@
+<%= turbo_frame_tag "workspace" do %>
+  <form action="/start_playbook" accept-charset="UTF-8" method="post" id="playbook_params" >
+    <div class="row">
+      <div class="col">
+        <%= label :playbook, "Плейбук для запуска", :class=>"form-label" %>
+        <input class="form-control" list="datalistOptions" id="playbook" name="playbook" placeholder="Нажмите для поиска...">
+        <datalist id="datalistOptions">
+          <% @playbooks.each do |playbook| %>
+            <option value="<%= playbook.name %>">
+          <% end %>
+        </datalist>
+      </div>
+    </div>
+  </form>
+  <br>
+  <div class="row">
+    <div class="col">
+      <%= label :filter, "Область применения плейбука", :class=>"form-label" %>
+      <%= turbo_frame_tag "table" do%>
+        <%= render "hosts/table_hosts" %>
+      <% end %>
+    </div>
+  </div>
+  <span id="count_select">0</span><span class="me-4"> выбрано</span><br>
+  <input id="hosts" class="visually-hidden" value="" name="hosts" form="playbook_params">
+  <button type="submit" class="btn btn-primary w-25" form="playbook_params" onclick="let selectedRows = document.getElementsByClassName('checked');
+                                                                                     let ids = [];
+                                                                                     for (let i = 0; i < selectedRows.length; i++) {
+                                                                                       let id = selectedRows[i].parentElement.nextElementSibling.children[0].innerHTML
+                                                                                       ids[i] = id
+                                                                                     }
+                                                                                     document.getElementById('hosts').value = ids">Подготовить плейбук</button>
+  <% if flash[:error].to_s.length != 0 %>
+    <div class="alert alert-danger m-0 mt-3 p-3" role="alert">
+      <%= flash[:error] %> <% flash[:error] = "" %>
+    </div>
+  <% end %>
+<% end %>
