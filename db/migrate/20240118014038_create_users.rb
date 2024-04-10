@@ -6,7 +6,6 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string :salt
       t.string :first_name
       t.string :last_name
-
     end
   end
 end
