@@ -1,0 +1,15 @@
+[Unit]
+Description=Web interface for Ansible
+
+[Service]
+Type=simple
+SyslogIdentifier=webansible
+User=root
+PIDFile=/opt/webansible/tmp/pids/server.pid
+WorkingDirectory=/opt/webansible
+ExecStart=/bin/bash -l -c "/opt/webansible/bin/rails s -b 0.0.0.0"
+ExecReload=/bin/kill -s USR2 $MAINPID
+ExecStop=/bin/kill -s QUIT $MAINPID
+
+[Install]
+WantedBy=multi-user.target
