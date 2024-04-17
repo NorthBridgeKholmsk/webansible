@@ -44,6 +44,9 @@ class ApplicationController < ActionController::Base
       f.close
     end
     @work_dir = vars["work_dir"]
+    unless Dir.exist?(@work_dir)
+      FileUtils.mkdir_p(@work_dir)
+    end
     @port = vars["port"]
   end
 end
