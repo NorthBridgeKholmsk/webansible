@@ -1,3 +1,0 @@
-function menuTurn(){
-    alert("test");
-};
