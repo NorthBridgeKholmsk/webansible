@@ -4,9 +4,6 @@ class SettingsController < ApplicationController
   def app_settings
     render "home/settings/app_settings"
   end
-  def integration
-    render "home/settings/integration"
-  end
   def general
     render "home/settings/_general"
   end
