@@ -53,6 +53,9 @@ class HostsController < ApplicationController
     @hosts = @@hosts_search
     @host_params_arr = host_params
     @host_params_arr[:host_role] = @host_params_arr[:host_role][1..-1].join(",")
+    if @host_params_arr[:password] == ""
+      @host_params_arr[:password] = @host.password
+    end
     if @host.update(@host_params_arr)
       render "index"
     else
@@ -69,6 +72,10 @@ class HostsController < ApplicationController
       @host.destroy
     end
     render "index"
+  end
+
+  def load_hosts
+
   end
 
   private

@@ -7,6 +7,12 @@
 
         <%= f.label :work_dir, "Рабочий каталог" %>
         <%= f.text_field :work_dir, :class => "form-control mb-3", :value=>@work_dir %>
+        <hr>
+        <%= f.label :api_zabbix, "API Токен Zabbix" %>
+        <%= f.password_field :api_zabbix, :class => "form-control mb-3" %>
+
+        <%= f.label :api_passwd, "API Токен Пассворк" %>
+        <%= f.password_field :api_passwd, :class => "form-control mb-3" %>
       </div>
       <div class="vr p-0"></div>
       <div class="col-md-auto">
