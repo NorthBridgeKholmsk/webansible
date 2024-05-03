@@ -14,8 +14,10 @@ class SettingsController < ApplicationController
         params.each do |key, value|
           unless key == "authenticity_token" || key == "commit" || key == "controller" || key == "action"
             if key == "api_zabbix" || key == "api_passwd"
-              encrypted_token = @crypt.encrypt_and_sign(value)
-              f.print(key + "=" + encrypted_token + "\n")
+              unless value == ""
+                encrypted_token = @crypt.encrypt_and_sign(value)
+                f.print(key + "=" + encrypted_token + "\n")
+              end
             else
               f.print(key + "=" + value + "\n")
             end

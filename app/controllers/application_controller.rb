@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   private
   def read_config
     config = "./config/webansible.conf"
-    vars = {"work_dir" => "/home/ansible", "port" => "3000", "api_zabbix" => "", "api_passwd" => ""}
+    vars = {"work_dir" => "/home/ansible", "port" => "3000", "api_zabbix" => "", "zabbix_url" => "", "api_passwd" => "", "passwork_url" => "", "def_role" => 0, "zabbix_lin_group" => "linux_hosts", "zabbix_win_group" => "windows_hosts"}
     if File.file? config
       File.open(config, "r") do |f|
         f.each_line do |line|
@@ -61,6 +61,11 @@ class ApplicationController < ActionController::Base
     end
     @port = vars["port"]
     @api_zabbix = vars["api_zabbix"]
+    @zabbix_url = vars["zabbix_url"]
     @api_passwd = vars["api_passwd"]
+    @passwork_url = vars["passwork_url"]
+    @def_role = vars["def_role"]
+    @zabbix_lin_group = vars["zabbix_lin_group"]
+    @zabbix_win_group = vars["zabbix_win_group"]
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_19_101356) do
+ActiveRecord::Schema[7.0].define(version: 2024_05_02_005441) do
   create_table "groups", force: :cascade do |t|
     t.text "name"
     t.binary "variables"
@@ -23,6 +23,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_19_101356) do
     t.text "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "zabbix_code"
   end
 
   create_table "host_types", force: :cascade do |t|

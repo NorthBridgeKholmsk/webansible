@@ -8,11 +8,26 @@
         <%= f.label :work_dir, "Рабочий каталог" %>
         <%= f.text_field :work_dir, :class => "form-control mb-3", :value=>@work_dir %>
         <hr>
+        <%= f.label :zabbix_url, "URL Zabbix сервера" %>
+        <%= f.text_field :zabbix_url, :class => "form-control mb-3", :value=>@zabbix_url %>
+
         <%= f.label :api_zabbix, "API Токен Zabbix" %>
-        <%= f.password_field :api_zabbix, :class => "form-control mb-3" %>
+        <%= f.password_field :api_zabbix, :class => "form-control mb-3", :value=>@api_zabbix %>
+
+        <%= f.label :passwork_url, "URL Пассворк" %>
+        <%= f.text_field :passwork_url, :class => "form-control mb-3", :value=>@passwork_url %>
 
         <%= f.label :api_passwd, "API Токен Пассворк" %>
-        <%= f.password_field :api_passwd, :class => "form-control mb-3" %>
+        <%= f.password_field :api_passwd, :class => "form-control mb-3", :value=>@api_passwd %>
+
+        <%= f.label :def_role, "Роль для хостов, у которых не удалось определить роль автоматически" %>
+        <%= f.collection_select :def_role, HostRole.order(:name), :id, :name, {:selected => @def_role.to_i}, {:class => "form-control list-group mb-3", :multiple => false} %>
+
+        <%= f.label :zabbix_lin_group, "Zabbix группа для Linux устройств" %>
+        <%= f.text_field :zabbix_lin_group, :class => "form-control mb-3", :value=>@zabbix_lin_group %>
+
+        <%= f.label :zabbix_win_group, "Zabbix группа для Windows устройств" %>
+        <%= f.text_field :zabbix_win_group, :class => "form-control mb-3", :value=>@zabbix_win_group %>
       </div>
       <div class="vr p-0"></div>
       <div class="col-md-auto">
