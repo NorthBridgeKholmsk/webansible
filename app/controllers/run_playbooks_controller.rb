@@ -27,7 +27,7 @@ class RunPlaybooksController < ApplicationController
     IO.popen("ansible-playbook -i #{@work_dir+"/inventory/hosts.yml"} #{@work_dir+"/playbook/main.yml"}") do |f|
       f.each do |line|
         sleep(0.05)
-        OutputChannel.broadcast_to("OutputChannel", line)
+        OutputChannel.broadcast_to("OutputChannel#{session[:user_id]}", line)
       end
     end
     FileUtils.remove_dir(@work_dir+"/inventory", true)

@@ -17,7 +17,7 @@
         <th scope="row"><input class="select_row" type="checkbox" onclick="checkBoxTable_clickSelectRow(this);"></th>
         <td><a href="#" data-bs-toggle="modal" data-bs-target="#edit_host_type_modal<%= type.id %>"><%= type.id_type %></a></td>
         <td><%= type.name %></td>
-        <td>0</td>
+        <td><%= Host.where("host_type_id LIKE ?", @host_type.id).size %></td>
       </tr>
     <% end %>
   </tbody>

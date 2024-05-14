@@ -28,5 +28,5 @@ Rails.application.routes.draw do
   get "app_settings", to: "settings#app_settings"
   get "general", to: "settings#general"
   post "settings_apply", to: "settings#settings_apply"
-  get "integration", to: "settings#integration"
+  post "load_hosts", to: "hosts#load_hosts"
 end

@@ -56,6 +56,6 @@ class HostRolesController < ApplicationController
 
   private
   def role_params
-    params.require(:host_role).permit(:id_role, :name)
+    params.require(:host_role).permit(:id_role, :name, :zabbix_code)
   end
 end

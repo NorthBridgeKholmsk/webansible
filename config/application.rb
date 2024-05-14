@@ -12,6 +12,10 @@ module Webansible
     config.load_defaults 7.0
     config.i18n.default_locale = :ru
     config.encoding = "utf-8"
+    config.active_record.encryption.support_unencrypted_data = true
+    config.active_record.encryption.primary_key = "1jy9MkrRAT600lCCZ5mmAZsnvao7cv3u"
+    config.active_record.encryption.deterministic_key = "tGGhZGqam7ZGhvvktLw9Yhp5m1BmgF5d"
+    config.active_record.encryption.key_derivation_salt = "N91KN4A2vlNiZmj7xJQAzTI7rWFnQhuo"
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

@@ -3,7 +3,7 @@ module ApplicationCable
     identified_by :current_user
 
     def connect
-      current_user = "OutputChannel"
+      #@current_user = session[:user_id]
     end
   end
 end

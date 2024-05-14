@@ -7,6 +7,7 @@
     <th class="h-auto" scope="col"><input id="select_all" type="checkbox" onclick="checkBoxTable_clickSelectAll();"></th>
     <th scope="col">ID</th>
     <th scope="col">Имя</th>
+    <th scope="col">Обозначения в Zabbix</th>
     <th scope="col">Количество хостов</th>
   </tr>
   </thead>
@@ -17,7 +18,8 @@
       <th scope="row"><input class="select_row" type="checkbox" onclick="checkBoxTable_clickSelectRow(this);"></th>
       <td><a href="#" data-bs-toggle="modal" data-bs-target="#edit_host_role_modal<%= role.id %>"><%= role.id_role %></a></td>
       <td><%= role.name %></td>
-      <td>0</td>
+      <td><%= role.zabbix_code %></td>
+      <td><%= Host.where("host_role LIKE ?", @host_role.id).size %></td>
     </tr>
   <% end %>
   </tbody>
