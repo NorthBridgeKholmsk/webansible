@@ -8,6 +8,7 @@
   <div class="col-md-auto">
     <%= User.find(session[:user_id]).first_name %> <%= User.find(session[:user_id]).last_name %>
   </div>
+  <div id="user_id" class="visually-hidden"><%= User.find(session[:user_id]).id %></div>
   <div class="col-md-auto">
     <%= link_to "Выйти", "/logout" %>
   </div>

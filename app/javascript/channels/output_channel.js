@@ -1,6 +1,7 @@
 import consumer from "./consumer"
 
-consumer.subscriptions.create("OutputChannel", {
+
+consumer.subscriptions.create({channel: "OutputChannel", room: document.getElementById("user_id").innerText}, {
   connected() {
     console.log("connected")
   },
