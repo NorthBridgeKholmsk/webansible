@@ -39,9 +39,11 @@ class ApplicationController < ActionController::Base
             value = var.join("=")
             @crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31])
             if key == "api_zabbix" || key == "api_passwd"
-              value.chop!
-              decrypted_token = @crypt.decrypt_and_verify(value)
-              vars[key] = decrypted_token
+              unless value == ""
+                value.chop!
+                decrypted_token = @crypt.decrypt_and_verify(value)
+                vars[key] = decrypted_token
+              end
             else
               vars[key] = value
             end
@@ -51,7 +53,7 @@ class ApplicationController < ActionController::Base
     else
       f = File.new(config, "a:UTF-8")
       vars.each do |key,value|
-        f.print(key + "=" + value + "\n")
+        f.print(key.to_s + "=" + value.to_s + "\n")
       end
       f.close
     end

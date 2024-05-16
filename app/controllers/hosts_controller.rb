@@ -75,80 +75,85 @@ class HostsController < ApplicationController
   end
 
   def load_hosts
-    groups = send_zabbix_request("hostgroup.get", {
-      "output" => "extend",
-      "selectHosts" => "extend",
-      "filter" => {
-        "name" => HostType.all.to_a.collect! {|type| type["id_type"]}
-      }
-    })
-    hosts = JSON(groups.body)["result"]
-    hosts[0]["hosts"].each do |host|
-      new_host = Host.new
-      hostinfo = send_zabbix_request("host.get", {
-       "selectGroups" => "extend",
-       "selectInterfaces" => "extend",
-       "filter" => {
-         "host" => [
-           host["name"]
-         ]
-       }
-     })
-      new_host.hostname = host["name"]
-      new_host.address = JSON(hostinfo.body)["result"][0]["interfaces"][0]["ip"].to_s
-      new_host.host_type_id = HostType.find_by(id_type: (JSON(hostinfo.body)["result"][0]["groups"].collect! { |group| group["name"] } & HostType.all.to_a.collect! {|type| type["id_type"]})[0]).id.to_i
-      if JSON(hostinfo.body)["result"][0]["groups"].collect! { |group| group["name"] }.include?(@zabbix_lin_group)
-        new_host.os = "Linux"
-      else if JSON(hostinfo.body)["result"][0]["groups"].collect! { |group| group["name"] }.include?(@zabbix_win_group)
-             new_host.os = "Windows"
-           end
-      end
-      HostRole.all.to_a.collect!{|role|
-        unless (new_host.hostname.split('.')[0].split('-')[1] =~ /^#{role.zabbix_code.split(',').join('|')}[0-9]*$/) == nil
-          new_host.host_role = role.id.to_s
-          break
+    if @zabbix_url == "" || @api_zabbix == "" || @passwork_url == "" || @api_passwd == ""
+      return
+    else
+
+      groups = send_zabbix_request("hostgroup.get", {
+        "output" => "extend",
+        "selectHosts" => "extend",
+        "filter" => {
+          "name" => HostType.all.to_a.collect! {|type| type["id_type"]}
+        }
+      })
+      hosts = JSON(groups.body)["result"]
+      hosts[0]["hosts"].each do |host|
+        new_host = Host.new
+        hostinfo = send_zabbix_request("host.get", {
+         "selectGroups" => "extend",
+         "selectInterfaces" => "extend",
+         "filter" => {
+           "host" => [
+             host["name"]
+           ]
+         }
+       })
+        new_host.hostname = host["name"]
+        new_host.address = JSON(hostinfo.body)["result"][0]["interfaces"][0]["ip"].to_s
+        new_host.host_type_id = HostType.find_by(id_type: (JSON(hostinfo.body)["result"][0]["groups"].collect! { |group| group["name"] } & HostType.all.to_a.collect! {|type| type["id_type"]})[0]).id.to_i
+        if JSON(hostinfo.body)["result"][0]["groups"].collect! { |group| group["name"] }.include?(@zabbix_lin_group)
+          new_host.os = "Linux"
+        else if JSON(hostinfo.body)["result"][0]["groups"].collect! { |group| group["name"] }.include?(@zabbix_win_group)
+               new_host.os = "Windows"
+             end
+        end
+        HostRole.all.to_a.collect!{|role|
+          unless (new_host.hostname.split('.')[0].split('-')[1] =~ /^#{role.zabbix_code.split(',').join('|')}[0-9]*$/) == nil
+            new_host.host_role = role.id.to_s
+            break
+          else
+            new_host.host_role = @def_role.to_s
+          end
+        }
+        if Group.find_by(name: new_host.hostname.split('.')[1]) == nil
+          group = Group.new
+          group.name = new_host.hostname.split('.')[1]
+          unless group.save
+            next
+          end
+        end
+        new_host.group_id = Group.find_by(name: new_host.hostname.split('.')[1]).id
+
+        passid = ""
+        token = JSON(send_passwork_request(@api_passwd, true, "/auth/login/", false, "").body)["data"]["token"]
+        passes = JSON(send_passwork_request({"query" => new_host.hostname, "tags" => ["ssh"]}, false, "/passwords/search", false, token).body)["data"]
+        passes.each do |pass|
+          if pass["tags"].include?("admin") && pass["name"] == new_host.hostname
+            passid = pass["id"]
+          end
+        end
+        pass = JSON(send_passwork_request(passid, true, "/passwords/", true, token).body)["data"]
+        new_host.login = pass["login"].to_s
+        new_host.password = Base64.decode64(pass["cryptedPassword"].to_s)
+
+        host = Host.find_by(hostname: new_host.hostname)
+        unless host == nil
+          unless host.update({
+                               :hostname => new_host.hostname,
+                               :address => new_host.address,
+                               :login => new_host.login,
+                               :password => new_host.password,
+                               :host_type_id => new_host.host_type_id,
+                               :os => new_host.os,
+                               :group_id => new_host.group_id,
+                               :host_role => new_host.host_role
+                             })
+            next
+          end
         else
-          new_host.host_role = @def_role.to_s
-        end
-      }
-      if Group.find_by(name: new_host.hostname.split('.')[1]) == nil
-        group = Group.new
-        group.name = new_host.hostname.split('.')[1]
-        unless group.save
-          next
-        end
-      end
-      new_host.group_id = Group.find_by(name: new_host.hostname.split('.')[1]).id
-
-      passid = ""
-      token = JSON(send_passwork_request(@api_passwd, true, "/auth/login/", false, "").body)["data"]["token"]
-      passes = JSON(send_passwork_request({"query" => new_host.hostname, "tags" => ["ssh"]}, false, "/passwords/search", false, token).body)["data"]
-      passes.each do |pass|
-        if pass["tags"].include?("admin") && pass["name"] == new_host.hostname
-          passid = pass["id"]
-        end
-      end
-      pass = JSON(send_passwork_request(passid, true, "/passwords/", true, token).body)["data"]
-      new_host.login = pass["login"].to_s
-      new_host.password = Base64.decode64(pass["cryptedPassword"].to_s)
-
-      host = Host.find_by(hostname: new_host.hostname)
-      unless host == nil
-        unless host.update({
-                             :hostname => new_host.hostname,
-                             :address => new_host.address,
-                             :login => new_host.login,
-                             :password => new_host.password,
-                             :host_type_id => new_host.host_type_id,
-                             :os => new_host.os,
-                             :group_id => new_host.group_id,
-                             :host_role => new_host.host_role
-                           })
-          next
-        end
-      else
-        unless new_host.save
-          next
+          unless new_host.save
+            next
+          end
         end
       end
     end
